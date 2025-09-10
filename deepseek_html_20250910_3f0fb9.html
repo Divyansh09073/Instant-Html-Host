@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstantHTMLHost - Share HTML Instantly</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for theming */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6eefd 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        header p {
+            color: var(--secondary);
+            margin-bottom: 0;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Card component */
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--light);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            min-height: 250px;
+            font-family: 'Fira Code', monospace;
+            line-height: 1.5;
+            resize: vertical;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-sm {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #0da271;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background-color: #e58c08;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+            transform: translateY(-2px);
+        }
+
+        /* Alias availability indicator */
+        .availability {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            gap: 0.3rem;
+        }
+
+        .available {
+            color: var(--success);
+        }
+
+        .unavailable {
+            color: var(--danger);
+        }
+
+        /* Result card */
+        .result-card {
+            display: none;
+        }
+
+        .url-display {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            word-break: break-all;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid var(--gray-light);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .url-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-light);
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Toggle switch */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gray);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* QR Code */
+        #qrcode {
+            margin: 1rem 0;
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: var(--border-radius);
+            display: inline-block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        /* Helper classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--secondary);
+        }
+
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        /* History section */
+        .history-section {
+            margin-top: 3rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            background-color: var(--light);
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-alias {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .history-url {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-top: 0.3rem;
+            word-break: break-all;
+        }
+
+        .history-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Responsive design */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .container {
+                padding: 2rem;
+            }
+
+            .action-buttons {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .history-actions {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* Syntax highlighting for textarea (basic) */
+        .code-editor {
+            position: relative;
+        }
+
+        .line-numbers {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            padding: 1rem;
+            padding-right: 0.5rem;
+            border-right: 1px solid var(--gray-light);
+            background-color: #f8fafc;
+            font-family: 'Fira Code', monospace;
+            text-align: right;
+            color: var(--secondary);
+            overflow: hidden;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        #htmlContent {
+            padding-left: 3.5rem;
+        }
+
+        /* Alert messages */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+
+        .alert-info {
+            background-color: #dbeafe;
+            border: 1px solid #93c5fd;
+            color: #1e40af;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            gap: 0.3rem;
+        }
+
+        .badge-primary {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            border-radius: var(--border-radius);
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <h1>InstantHTMLHost</h1>
+            </div>
+            <p>Share HTML pages instantly with a custom URL - no hosting required</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card slide-in">
+            <div class="card-header">
+                <h2><i class="fas fa-plus-circle"></i> Create Your HTML Page</h2>
+                <div class="badge badge-primary">
+                    <i class="fas fa-bolt"></i> Demo Mode
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" data-tab="upload">
+                    <i class="fas fa-upload"></i> Upload File
+                </div>
+                <div class="tab" data-tab="paste">
+                    <i class="fas fa-paste"></i> Paste HTML
+                </div>
+            </div>
+
+            <div class="tab-content active" id="uploadTab">
+                <div class="form-group">
+                    <label for="htmlFile"><i class="fas fa-file-code"></i> Select HTML File</label>
+                    <input type="file" id="htmlFile" accept=".html" class="mb-2">
+                    <p class="text-muted">Select an HTML file from your device to upload</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="pasteTab">
+                <div class="form-group">
+                    <label for="htmlContent"><i class="fas fa-code"></i> HTML Content</label>
+                    <div class="code-editor">
+                        <div class="line-numbers" id="lineNumbers">1</div>
+                        <textarea id="htmlContent" placeholder="Paste your HTML code here..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="alias"><i class="fas fa-link"></i> Custom Alias (optional)</label>
+                <div class="input-group">
+                    <input type="text" id="alias" placeholder="my-page" pattern="[a-z0-9\-_.]{1,40}">
+                    <button type="button" id="checkAvailability" class="btn btn-outline">
+                        <i class="fas fa-check-circle"></i> Check Availability
+                    </button>
+                    <button type="button" id="generateAlias" class="btn btn-outline">
+                        <i class="fas fa-magic"></i> Auto-generate
+                    </button>
+                </div>
+                <div id="availabilityMessage" class="mt-1"></div>
+                <p class="text-muted">Only letters, numbers, hyphens, underscores and periods allowed (max 40 characters)</p>
+            </div>
+
+            <div class="form-group">
+                <label for="expiration"><i class="fas fa-clock"></i> Expiration</label>
+                <select id="expiration">
+                    <option value="never">Never</option>
+                    <option value="1">1 Day</option>
+                    <option value="7">7 Days</option>
+                    <option value="30">30 Days</option>
+                </select>
+                <p class="text-muted">Note: Demo mode links are encoded in the URL and don't actually expire</p>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="passwordProtection">
+                    <i class="fas fa-lock"></i> Enable password protection
+                </label>
+                <div id="passwordFields" class="hidden mt-1">
+                    <input type="password" id="password" placeholder="Set a password">
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Security Warning:</strong> Hosting arbitrary HTML may include scripts, trackers, or malicious code. 
+                    Only share content from trusted sources.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="consentCheck">
+                    I understand the risks and want to publish this content
+                </label>
+            </div>
+
+            <button type="button" id="createLink" class="btn btn-success" disabled>
+                <i class="fas fa-rocket"></i> Create Live Link
+            </button>
+        </div>
+
+        <div class="card result-card fade-in" id="resultCard">
+            <div class="card-header">
+                <h2><i class="fas fa-check-circle"></i> Your Page is Live! 🎉</h2>
+                <div class="badge badge-success">
+                    <i class="fas fa-eye"></i> <span id="viewCount">0</span> Views
+                </div>
+            </div>
+
+            <div class="url-display">
+                <div class="url-text" id="urlDisplay"></div>
+                <button class="btn btn-sm btn-outline" id="copyUrlBtn">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-sm" id="copyLink">
+                    <i class="fas fa-copy"></i> Copy Link
+                </button>
+                <button class="btn btn-sm" id="openPreview">
+                    <i class="fas fa-external-link-alt"></i> Open Preview
+                </button>
+                <button class="btn btn-sm" id="downloadHtml">
+                    <i class="fas fa-download"></i> Download HTML
+                </button>
+                <button class="btn btn-sm" id="generateQr">
+                    <i class="fas fa-qrcode"></i> QR Code
+                </button>
+                <button class="btn btn-sm btn-danger" id="deleteLink">
+                    <i class="fas fa-trash"></i> Delete Link
+                </button>
+            </div>
+
+            <div id="qrcode" class="hidden"></div>
+
+            <div class="stats">
+                <div class="stat">
+                    <i class="fas fa-weight-hanging"></i> Size: <span id="fileSize">0</span> KB
+                </div>
+                <div class="stat">
+                    <i class="fas fa-calendar"></i> Created: <span id="createdDate">Just now</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-chart-line"></i> Views: <span id="viewCount">0</span>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-2">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Demo Mode:</strong> Your content is encoded in the URL and will work without a server. 
+                    For persistent hosting with custom aliases, enable server mode.
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h2><i class="fas fa-history"></i> Your Hosting History</h2>
+            <p class="text-muted">Previously created HTML pages (stored in your browser)</p>
+            
+            <div class="card">
+                <div id="historyList">
+                    <!-- History items will be added here -->
+                    <div class="text-center text-muted py-3" id="emptyHistory">
+                        <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>No hosting history yet. Create your first HTML page to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>InstantHTMLHost &copy; 2023 - Share HTML pages instantly</p>
+            <p class="text-muted">Works entirely in your browser - no server required for demo mode</p>
+        </div>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // CONFIGURATION
+        // =========================================================================
+        const config = {
+            serverEnabled: false,
+            serverBaseUrl: window.location.origin,
+        };
+
+        // =========================================================================
+        // UTILITY FUNCTIONS
+        // =========================================================================
+
+        /**
+         * Compresses a string using LZ-based compression
+         */
+        function compress(string) {
+            return btoa(encodeURIComponent(string).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+        }
+
+        /**
+         * Decompresses a string compressed with the compress function
+         */
+        function decompress(compressed) {
+            try {
+                return decodeURIComponent(Array.prototype.map.call(atob(compressed), function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+            } catch (e) {
+                console.error('Decompression error:', e);
+                return null;
+            }
+        }
+
+        /**
+         * Generates a random alias
+         */
+        function generateAlias() {
+            const prefix = 'page';
+            const random = Math.random().toString(36).substring(2, 8);
+            return `${prefix}-${random}`;
+        }
+
+        /**
+         * Creates a blob URL from HTML content
+         */
+        function createBlobURL(html) {
+            const blob = new Blob([html], { type: 'text/html' });
+            return URL.createObjectURL(blob);
+        }
+
+        /**
+         * Checks if an alias is valid
+         */
+        function isValidAlias(alias) {
+            return /^[a-z0-9\-_.]{1,40}$/i.test(alias);
+        }
+
+        /**
+         * Formats file size in a human-readable format
+         */
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' bytes';
+            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            else return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        /**
+         * Updates line numbers in the code editor
+         */
+        function updateLineNumbers() {
+            const textarea = document.getElementById('htmlContent');
+            const lineNumbers = document.getElementById('lineNumbers');
+            const lines = textarea.value.split('\n').length;
+            let numbers = '';
+            
+            for (let i = 1; i <= lines; i++) {
+                numbers += i + '<br>';
+            }
+            
+            lineNumbers.innerHTML = numbers;
+        }
+
+        /**
+         * Saves a page to history
+         */
+        function saveToHistory(alias, html, url) {
+            try {
+                let history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                
+                // Check if alias already exists in history
+                const existingIndex = history.findIndex(item => item.alias === alias);
+                
+                const historyItem = {
+                    alias,
+                    html,
+                    url,
+                    created: new Date().toISOString(),
+                    views: 0,
+                    size: new Blob([html]).size
+                };
+                
+                if (existingIndex !== -1) {
+                    history[existingIndex] = historyItem;
+                } else {
+                    history.unshift(historyItem);
+                }
+                
+                localStorage.setItem('htmlHostHistory', JSON.stringify(history));
+                renderHistory();
+            } catch (e) {
+                console.error('Failed to save to history:', e);
+            }
+        }
+
+        /**
+         * Renders the history list
+         */
+        function renderHistory() {
+            try {
+                const history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                const historyList = document.getElementById('historyList');
+                const emptyHistory = document.getElementById('emptyHistory');
+                
+                if (history.length === 0) {
+                    emptyHistory.style.display = 'block';
+                    return;
+                }
+                
+                emptyHistory.style.display = 'none';
+                historyList.innerHTML = '';
+                
+                history.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-info">
+                            <div class="history-alias">${item.alias}</div>
+                            <div class="history-url">${item.url}</div>
+                            <div class="history-stats">
+                                <span><i class="fas fa-calendar"></i> ${new Date(item.created).toLocaleDateString()}</span>
+                                <span><i class="fas fa-weight-hanging"></i> ${formatFileSize(item.size)}</span>
+                                <span><i class="fas fa-eye"></i> ${item.views} Views</span>
+                            </div>
+                        </div>
+                        <div class="history-actions">
+                            <button class="btn btn-sm btn-outline view-history" data-alias="${item.alias}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            <button class="btn btn-sm btn-outline copy-history" data-url="${item.url}">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-history" data-alias="${item.alias}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+                
+                // Add event listeners to history buttons
+                document.querySelectorAll('.view-history').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const alias = this.getAttribute('data-alias');
+                        const history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                        const item = history.find(i => i.alias === alias);
+                        
+                        if (item) {
+                            window.open(item.url, '_blank');
+                            
+                            // Update view count
+                            item.views = (item.views || 0) + 1;
+                            localStorage.setItem('htmlHostHistory', JSON.stringify(history));
+                            renderHistory();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.copy-history').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const url = this.getAttribute('data-url');
+                        navigator.clipboard.writeText(url).then(() => {
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                            }, 2000);
+                        });
+                    });
+                });
+                
+                document.querySelectorAll('.delete-history').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const alias = this.getAttribute('data-alias');
+                        if (confirm(`Are you sure you want to delete "${alias}"?`)) {
+                            let history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                            history = history.filter(item => item.alias !== alias);
+                            localStorage.setItem('htmlHostHistory', JSON.stringify(history));
+                            renderHistory();
+                        }
+                    });
+                });
+                
+            } catch (e) {
+                console.error('Failed to render history:', e);
+            }
+        }
+
+        // =========================================================================
+        // DEMO MODE FUNCTIONS
+        // =========================================================================
+
+        /**
+         * Encodes content for demo mode URL
+         */
+        function encodeForDemoMode(alias, html, password = '') {
+            const compressed = compress(html);
+            let flags = '0';
+            
+            if (password) {
+                flags = '1';
+                const passwordHash = btoa(password).replace(/=+$/, '');
+                return `live=${alias}:${flags}:${passwordHash}:${compressed}`;
+            }
+            
+            return `live=${alias}:${flags}::${compressed}`;
+        }
+
+        /**
+         * Decodes content from demo mode URL fragment
+         */
+        function decodeFromDemoMode(fragment) {
+            const match = fragment.match(/^live=([^:]+):(\d):([^:]*):(.+)$/);
+            if (!match) return null;
+            
+            const [, alias, flags, passwordHash, compressed] = match;
+            const html = decompress(compressed);
+            
+            if (!html) return null;
+            
+            return {
+                alias,
+                html,
+                hasPassword: flags === '1',
+                passwordHash
+            };
+        }
+
+        /**
+         * Renders content from URL fragment if present
+         */
+        function renderFromFragment() {
+            if (window.location.hash) {
+                const data = decodeFromDemoMode(window.location.hash.substring(1));
+                if (data) {
+                    if (data.hasPassword) {
+                        const password = prompt('This page is password protected. Enter password:');
+                        const enteredHash = btoa(password).replace(/=+$/, '');
+                        
+                        if (enteredHash !== data.passwordHash) {
+                            alert('Incorrect password');
+                            return;
+                        }
+                    }
+                    
+                    document.open();
+                    document.write(data.html);
+                    document.close();
+                    
+                    // Track view
+                    try {
+                        const viewCount = localStorage.getItem(`views_${data.alias}`) || 0;
+                        localStorage.setItem(`views_${data.alias}`, parseInt(viewCount) + 1);
+                        
+                        // Update history view count
+                        let history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                        const itemIndex = history.findIndex(item => item.alias === data.alias);
+                        if (itemIndex !== -1) {
+                            history[itemIndex].views = (history[itemIndex].views || 0) + 1;
+                            localStorage.setItem('htmlHostHistory', JSON.stringify(history));
+                        }
+                    } catch (e) {
+                        console.error('Failed to track view:', e);
+                    }
+                }
+            }
+        }
+
+        // =========================================================================
+        // UI EVENT HANDLERS
+        // =========================================================================
+
+        // DOM ready event
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're rendering a page from a fragment
+            if (window.location.hash && window.location.hash.startsWith('#live=')) {
+                renderFromFragment();
+                return;
+            }
+            
+            // Initialize UI
+            initTabs();
+            initFileUpload();
+            initCodeEditor();
+            initAliasCheck();
+            initPasswordToggle();
+            initCreateButton();
+            initActionButtons();
+            renderHistory();
+            
+            // Auto-generate alias if empty
+            document.getElementById('generateAlias').addEventListener('click', function() {
+                document.getElementById('alias').value = generateAlias();
+                checkAliasAvailability();
+            });
+            
+            // Check alias on input
+            document.getElementById('alias').addEventListener('input', checkAliasAvailability);
+            
+            // Enable create button when consent is given
+            document.getElementById('consentCheck').addEventListener('change', function() {
+                document.getElementById('createLink').disabled = !this.checked;
+            });
+            
+            // Copy URL button
+            document.getElementById('copyUrlBtn').addEventListener('click', function() {
+                const url = document.getElementById('urlDisplay').textContent;
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+
+        /**
+         * Initializes tab functionality
+         */
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show active content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabName + 'Tab').classList.add('active');
+                });
+            });
+        }
+
+        /**
+         * Initializes file upload functionality
+         */
+        function initFileUpload() {
+            const fileInput = document.getElementById('htmlFile');
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('htmlContent').value = e.target.result;
+                    updateLineNumbers();
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        /**
+         * Initializes code editor functionality
+         */
+        function initCodeEditor() {
+            const textarea = document.getElementById('htmlContent');
+            textarea.addEventListener('input', updateLineNumbers);
+            textarea.addEventListener('scroll', function() {
+                document.getElementById('lineNumbers').scrollTop = this.scrollTop;
+            });
+            
+            // Initial line numbers
+            updateLineNumbers();
+        }
+
+        /**
+         * Initializes alias availability checking
+         */
+        function initAliasCheck() {
+            document.getElementById('checkAvailability').addEventListener('click', checkAliasAvailability);
+        }
+
+        /**
+         * Checks if an alias is available
+         */
+        function checkAliasAvailability() {
+            const alias = document.getElementById('alias').value;
+            const messageEl = document.getElementById('availabilityMessage');
+            
+            if (!alias) {
+                messageEl.textContent = '';
+                return;
+            }
+            
+            if (!isValidAlias(alias)) {
+                messageEl.innerHTML = '<span class="unavailable"><i class="fas fa-times-circle"></i> Invalid alias format</span>';
+                return;
+            }
+            
+            // Demo mode: Check localStorage history
+            try {
+                const history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                const exists = history.some(item => item.alias === alias);
+                
+                if (exists) {
+                    messageEl.innerHTML = '<span class="unavailable"><i class="fas fa-times-circle"></i> Alias is already taken</span>';
+                } else {
+                    messageEl.innerHTML = '<span class="available"><i class="fas fa-check-circle"></i> Alias is available</span>';
+                }
+            } catch (e) {
+                messageEl.innerHTML = '<span class="unavailable"><i class="fas fa-exclamation-triangle"></i> Alias checking not available</span>';
+            }
+        }
+
+        /**
+         * Initializes password protection toggle
+         */
+        function initPasswordToggle() {
+            const toggle = document.getElementById('passwordProtection');
+            const passwordFields = document.getElementById('passwordFields');
+            
+            toggle.addEventListener('change', function() {
+                passwordFields.classList.toggle('hidden', !this.checked);
+            });
+        }
+
+        /**
+         * Initializes the create button functionality
+         */
+        function initCreateButton() {
+            document.getElementById('createLink').addEventListener('click', function() {
+                const alias = document.getElementById('alias').value || generateAlias();
+                const html = document.getElementById('htmlContent').value;
+                const expiration = document.getElementById('expiration').value;
+                const passwordProtection = document.getElementById('passwordProtection').checked;
+                const password = passwordProtection ? document.getElementById('password').value : '';
+                
+                if (!html.trim()) {
+                    alert('Please provide HTML content');
+                    return;
+                }
+                
+                if (alias && !isValidAlias(alias)) {
+                    alert('Invalid alias format');
+                    return;
+                }
+                
+                // Demo mode
+                const fragment = encodeForDemoMode(alias, html, password);
+                const url = window.location.href.split('#')[0] + '#' + fragment;
+                
+                // Store in history
+                saveToHistory(alias, html, url);
+                
+                // Show result
+                showResult(url, html, alias);
+            });
+        }
+
+        /**
+         * Shows the result card with the created URL
+         */
+        function showResult(url, html, alias) {
+            const resultCard = document.getElementById('resultCard');
+            const urlDisplay = document.getElementById('urlDisplay');
+            const fileSize = document.getElementById('fileSize');
+            const createdDate = document.getElementById('createdDate');
+            const viewCount = document.getElementById('viewCount');
+            
+            urlDisplay.textContent = url;
+            fileSize.textContent = formatFileSize(new Blob([html]).size);
+            createdDate.textContent = new Date().toLocaleString();
+            
+            // Get view count from history
+            try {
+                const history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                const item = history.find(i => i.alias === alias);
+                viewCount.textContent = item ? item.views || 0 : 0;
+            } catch (e) {
+                viewCount.textContent = '0';
+            }
+            
+            resultCard.style.display = 'block';
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * Initializes action buttons in the result card
+         */
+        function initActionButtons() {
+            // Copy link
+            document.getElementById('copyLink').addEventListener('click', function() {
+                const url = document.getElementById('urlDisplay').textContent;
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalText = this.querySelector('span').textContent;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-copy"></i> Copy Link';
+                    }, 2000);
+                }).catch(err => {
+                    alert('Failed to copy: ' + err);
+                });
+            });
+            
+            // Open preview
+            document.getElementById('openPreview').addEventListener('click', function() {
+                const url = document.getElementById('urlDisplay').textContent;
+                window.open(url, '_blank');
+                
+                // Update view count
+                try {
+                    const history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                    const alias = document.getElementById('alias').value || generateAlias();
+                    const itemIndex = history.findIndex(item => item.alias === alias);
+                    if (itemIndex !== -1) {
+                        history[itemIndex].views = (history[itemIndex].views || 0) + 1;
+                        localStorage.setItem('htmlHostHistory', JSON.stringify(history));
+                        document.getElementById('viewCount').textContent = history[itemIndex].views;
+                    }
+                } catch (e) {
+                    console.error('Failed to update view count:', e);
+                }
+            });
+            
+            // Download HTML
+            document.getElementById('downloadHtml').addEventListener('click', function() {
+                const html = document.getElementById('htmlContent').value;
+                const alias = document.getElementById('alias').value || 'page';
+                const blob = new Blob([html], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `${alias}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
+            // Generate QR code
+            document.getElementById('generateQr').addEventListener('click', function() {
+                const url = document.getElementById('urlDisplay').textContent;
+                const qrcode = document.getElementById('qrcode');
+                
+                if (qrcode.classList.contains('hidden')) {
+                    // Simple QR code generation using canvas
+                    const canvas = document.createElement('canvas');
+                    const size = 200;
+                    canvas.width = size;
+                    canvas.height = size;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Clear canvas
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(0, 0, size, size);
+                    
+                    // Generate QR pattern (simplified)
+                    const cellSize = 5;
+                    const data = url;
+                    
+                    // Simple pattern based on string hash
+                    let hash = 0;
+                    for (let i = 0; i < data.length; i++) {
+                        hash = ((hash << 5) - hash) + data.charCodeAt(i);
+                        hash |= 0;
+                    }
+                    
+                    ctx.fillStyle = 'black';
+                    const seed = Math.abs(hash);
+                    const random = () => {
+                        const x = Math.sin(seed) * 10000;
+                        return x - Math.floor(x);
+                    };
+                    
+                    for (let y = 0; y < size / cellSize; y++) {
+                        for (let x = 0; x < size / cellSize; x++) {
+                            if (random() > 0.5) {
+                                ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                            }
+                        }
+                    }
+                    
+                    qrcode.innerHTML = '';
+                    qrcode.appendChild(canvas);
+                    qrcode.classList.remove('hidden');
+                    
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide QR Code';
+                } else {
+                    qrcode.classList.add('hidden');
+                    this.innerHTML = '<i class="fas fa-qrcode"></i> QR Code';
+                }
+            });
+            
+            // Delete link
+            document.getElementById('deleteLink').addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this link?')) {
+                    const alias = document.getElementById('alias').value;
+                    
+                    // Remove from history
+                    try {
+                        let history = JSON.parse(localStorage.getItem('htmlHostHistory')) || [];
+                        history = history.filter(item => item.alias !== alias);
+                        localStorage.setItem('htmlHostHistory', JSON.stringify(history));
+                        renderHistory();
+                    } catch (e) {
+                        console.error('Failed to delete from history:', e);
+                    }
+                    
+                    document.getElementById('resultCard').style.display = 'none';
+                    alert('Page deleted successfully');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
